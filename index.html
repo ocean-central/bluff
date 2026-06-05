@@ -1,121 +1,48 @@
-<!DOCTYPE html>
-<html lang="en" class="h-full">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Bluff – Dark Neon Card Game</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Tailwind CSS (CDN) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Icons (optional, for avatars) -->
-  <script src="https://unpkg.com/feather-icons"></script>
+  <meta charset="utf-8">
+  <title>bluff</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="index.css">
 </head>
-<body class="bg-primary text-primary font-sans flex flex-col h-full">
+<body>
+  <section id="setup">
+    <h1>bluff</h1>
+    <div class="controls">
+      <label for="botCount">bots</label>
+      <input id="botCount" type="range" min="1" max="7" value="3">
 
-  <!-- ==== 2️⃣ Game Setup Screen ==== -->
-  <section id="setup" class="flex-1 flex flex-col items-center justify-center space-y-8 p-4">
-    <h1 class="text-4xl font-bold text-accent-blue drop-shadow-lg">Bluff – Dark Neon</h1>
-
-    <div class="w-full max-w-md space-y-6">
-      <!-- Bot count selector -->
-      <div class="flex flex-col space-y-2">
-        <label class="text-lg font-medium">Number of Bots (1‑7)</label>
-        <input id="botCount" type="range" min="1" max="7" value="3"
-               class="w-full accent-accent-blue">
-        <div class="flex justify-between text-sm">
-          <span>1</span><span>7</span>
-        </div>
-      </div>
-
-      <!-- Cards per player selector -->
-      <div class="flex flex-col space-y-2">
-        <label class="text-lg font-medium">Cards per Player</label>
-        <select id="cardsPerPlayer"
-                class="bg-card text-primary rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-purple">
-          <option value="5">5 (fixed)</option>
-          <option value="7">7 (fixed)</option>
-          <option value="10">10 (fixed)</option>
-          <option value="auto">Evenly divide 52‑card deck</option>
-        </select>
-      </div>
-
-      <!-- Start button -->
-      <button id="startBtn"
-              class="w-full py-3 bg-accent-purple text-black font-bold rounded shadow-lg
-                     hover:scale-105 transition-transform duration-200
-                     animate-pulse">
-        Start Game
-      </button>
-    </div>
-  </section>
-
-  <!-- ==== 3️⃣ Main Game Board ==== -->
-  <section id="game" class="hidden flex-1 relative overflow-hidden">
-    <!-- Table (circular/oval) -->
-    <div id="table" class="absolute inset-0 flex items-center justify-center">
-      <div class="relative w-[90vw] h-[70vh] max-w-4xl max-h-[70vh] rounded-full bg-card
-                  shadow-2xl flex items-center justify-center">
-        <!-- Center pile -->
-        <div id="centerPile" class="relative w-24 h-32 flex items-center justify-center">
-          <div class="absolute inset-0 bg-card rounded-lg shadow-inner"></div>
-          <div id="claimOverlay"
-               class="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full text-sm text-accent-green
-                      whitespace-nowrap"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Player hubs (generated dynamically) -->
-    <div id="playersContainer" class="absolute inset-0 pointer-events-none"></div>
-
-    <!-- Human hand -->
-    <div id="humanHand"
-         class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-5xl flex justify-center
-                space-x-2 p-4 pointer-events-auto"></div>
-
-    <!-- Action bar (appears on human turn) -->
-    <div id="actionBar"
-         class="absolute bottom-0 left-0 right-0 bg-card/80 backdrop-blur-md p-3 flex items-center
-                justify-center space-x-4 hidden">
-      <select id="rankSelect"
-              class="bg-card text-primary rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-accent-blue">
-        <!-- options filled by JS -->
+      <label for="cardsPerPlayer">cards</label>
+      <select id="cardsPerPlayer">
+        <option value="5">5</option>
+        <option value="7">7</option>
+        <option value="10">10</option>
+        <option value="auto">auto</option>
       </select>
 
-      <button id="playBtn"
-              class="px-4 py-2 bg-accent-blue text-black font-semibold rounded disabled:opacity-50">
-        Play Selected
-      </button>
-
-      <button id="bluffBtn"
-              class="px-4 py-2 bg-accent-purple text-black font-semibold rounded hidden">
-        Bluff!
-      </button>
-
-      <button id="passBtn"
-              class="px-4 py-2 bg-gray-600 text-white font-semibold rounded hidden">
-        Pass
-      </button>
-    </div>
-
-    <!-- Game log (toggleable) -->
-    <div id="logToggle"
-         class="absolute top-2 right-2 text-xs text-accent-green cursor-pointer select-none">
-      Log ▼
-    </div>
-    <div id="gameLog"
-         class="absolute top-8 right-2 w-64 h-48 bg-card/90 backdrop-blur-md p-2 overflow-y-auto text-xs
-                hidden">
-      <ul id="logList" class="space-y-1"></ul>
+      <button id="startBtn">start</button>
     </div>
   </section>
 
-  <!-- Custom JS -->
-  <script src="script.js"></script>
-  <script>feather.replace()</script>
+  <section id="game" hidden>
+    <div id="table">
+      <div id="centerPile">center</div>
+    </div>
+
+    <div id="players" class="game-row"></div>
+
+    <div id="humanHand" class="game-row"></div>
+
+    <div id="actionBar" class="action hidden">
+      <select id="rankSelect" class="select"></select>
+      <button id="playBtn">play</button>
+      <button id="passBtn">pass</button>
+    </div>
+
+    <div id="log"></div>
+  </section>
+
+  <script src="index.js"></script>
 </body>
 </html>

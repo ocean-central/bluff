@@ -1,145 +1,161 @@
-/* -------------------------------------------------
-   Dark‑mode palette & utility variables
-   ------------------------------------------------- */
 :root {
-  --bg-primary: #121212;
-  --bg-card: #1e1e1e;
-  --accent-blue: #00e5ff;
-  --accent-green: #00ff88;
-  --accent-purple: #c792ea;
+  color-scheme: dark;
+  --bg: #090909;
+  --panel: #111111;
+  --border: rgba(255,255,255,.08);
+  --text: #f4f4f4;
+  --muted: #9ba0aa;
+  --accent: #3ddc97;
 }
 
-/* Tailwind overrides (keep the CDN classes) */
-.bg-primary   { background-color: var(--bg-primary); }
-.bg-card      { background-color: var(--bg-card); }
-.text-primary { color: var(--bg-primary); }
-.text-accent-blue   { color: var(--accent-blue); }
-.text-accent-green  { color: var(--accent-green); }
-.text-accent-purple { color: var(--accent-purple); }
-.border-accent-blue { border-color: var(--accent-blue); }
-
-/* -------------------------------------------------
-   Card component
-   ------------------------------------------------- */
-.card {
-  width: 4rem;
-  height: 6rem;
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="300"><rect width="200" height="300" fill="%231e1e1e"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23666" font-size="48">🂠</text></svg>') center/cover;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  will-change: transform;
+* {
+  box-sizing: border-box;
 }
 
-/* Hover lift */
-.card:hover { transform: translateY(-0.5rem); }
-
-/* Selected state */
-.card.selected {
-  border: 3px solid var(--accent-blue);
-  box-shadow: 0 0 12px var(--accent-blue);
+html, body {
+  margin: 0;
+  min-height: 100%;
 }
 
-/* -------------------------------------------------
-   Player hub (avatar + name + badge)
-   ------------------------------------------------- */
-.player-hub {
-  position: absolute;
-  width: 8rem;
-  text-align: center;
-  pointer-events: auto;
-}
-.player-hub .avatar {
-  width: 3rem; height: 3rem;
-  margin: 0 auto;
-  background: var(--bg-card);
-  border-radius: 9999px;
+body {
+  background: radial-gradient(circle at top, #111 0%, #070707 45%, #020202 100%);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-.player-hub .name {
-  margin-top: 0.25rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-.player-hub .badge {
-  margin-top: 0.1rem;
-  background: var(--accent-purple);
-  color: #000;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 0.1rem 0.4rem;
-  border-radius: 9999px;
+  padding: 1rem;
+  text-transform: lowercase;
 }
 
-/* Active turn glow */
-.player-hub.active::after {
-  content:"";
-  position:absolute;
-  inset:-0.4rem;
-  border-radius:9999px;
-  border:2px solid var(--accent-blue);
-  box-shadow:0 0 12px var(--accent-blue);
-  animation: pulse 1.5s infinite;
+section {
+  width: min(100%, 640px);
+  background: rgba(18,18,18,.92);
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: 0 20px 80px rgba(0,0,0,.35);
 }
 
-/* -------------------------------------------------
-   Animations
-   ------------------------------------------------- */
-@keyframes deal {
-  from { transform: translate3d(0,0,0) scale(0.2); opacity:0; }
-  to   { transform: translate3d(var(--dx), var(--dy),0) scale(1); opacity:1; }
-}
-@keyframes playToPile {
-  from { transform: translate3d(var(--sx), var(--sy),0); }
-  to   { transform: translate3d(0,0,0); }
-}
-@keyframes flipReveal {
-  0%   { transform: rotateY(0deg); }
-  100% { transform: rotateY(180deg); }
-}
-@keyframes pulse {
-  0%,100% { box-shadow:0 0 8px var(--accent-blue); }
-  50%      { box-shadow:0 0 20px var(--accent-blue); }
+h1 {
+  margin: 0 0 1rem;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  letter-spacing: -.04em;
 }
 
-/* Neon flare (used via JS) */
-.flare {
-  position:absolute;
-  width:2rem; height:2rem;
-  border-radius:50%;
-  background:radial-gradient(circle, var(--accent-purple) 0%, transparent 70%);
-  animation: flare 0.8s ease-out forwards;
-}
-@keyframes flare {
-  from { opacity:0.8; transform:scale(0.5); }
-  to   { opacity:0;   transform:scale(2); }
+.controls {
+  display: grid;
+  gap: 1rem;
 }
 
-/* Text pop‑ups (e.g., “BLUFF CALLED!”) */
-.popup {
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:2rem;
-  font-weight:800;
-  color:var(--accent-green);
-  text-shadow:0 0 8px var(--accent-green);
-  animation: popup 1.2s ease-out forwards;
-}
-@keyframes popup {
-  0%   { opacity:0; transform:scale(0.5); }
-  30%  { opacity:1; transform:scale(1.2); }
-  100% { opacity:0; transform:scale(1); }
+label {
+  display: block;
+  font-size: .95rem;
+  color: var(--muted);
 }
 
-/* -------------------------------------------------
-   Responsive tweaks
-   ------------------------------------------------- */
-@media (max-width: 640px) {
-  .player-hub { width:6rem; }
-  .card { width:3rem; height:4.5rem; }
+input[type=range], select, button {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: .9rem;
+  background: rgba(255,255,255,.04);
+  color: var(--text);
+  padding: .95rem 1rem;
+  font: 1rem ui-sans-serif, system-ui, sans-serif;
+}
+
+input[type=range] {
+  padding: .5rem 0;
+}
+
+button {
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  background: rgba(61,220,151,.12);
+}
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid rgba(61,220,151,.8);
+  outline-offset: 2px;
+}
+
+#game {
+  display: grid;
+  gap: 1rem;
+}
+
+.game-row {
+  display: grid;
+  gap: .85rem;
+}
+
+#table {
+  min-height: 12rem;
+  border-radius: 1.25rem;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.06);
+  display: grid;
+  place-items: center;
+}
+
+#centerPile {
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 1rem;
+  background: rgba(255,255,255,.05);
+  display: grid;
+  place-items: center;
+  font-size: .95rem;
+}
+
+#players {
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+}
+
+.player {
+  border-radius: 1rem;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.06);
+  padding: 1rem;
+  text-align: center;
+  font-size: .95rem;
+}
+
+#humanHand {
+  grid-template-columns: repeat(auto-fit, minmax(4.5rem, 1fr));
+}
+
+.card {
+  min-height: 5.5rem;
+  border-radius: 1rem;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+}
+
+.action {
+  display: grid;
+  gap: .75rem;
+}
+
+.select {
+  min-width: 8rem;
+}
+
+.hidden {
+  display: none !important;
+}
+
+#log {
+  min-height: 1.5rem;
+  color: var(--accent);
+  font-size: .95rem;
 }
