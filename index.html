@@ -7,41 +7,37 @@
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
-  <section id="setup">
-    <h1>bluff</h1>
-    <div class="controls">
-      <label for="botCount">bots</label>
-      <input id="botCount" type="range" min="1" max="7" value="3">
+  <main class="page">
+    <section id="setup" class="panel">
+      <h1>bluff</h1>
+      <div class="controls">
+        <label for="botCount">bots</label>
+        <input id="botCount" type="range" min="1" max="3" value="1">
+        <div class="range-labels"><span>1</span><span>3</span></div>
+        <label for="cardsPerPlayer">cards</label>
+        <select id="cardsPerPlayer">
+          <option value="5">5</option>
+          <option value="7">7</option>
+          <option value="10">10</option>
+          <option value="auto">auto</option>
+        </select>
+        <button id="startBtn">start</button>
+      </div>
+    </section>
 
-      <label for="cardsPerPlayer">cards</label>
-      <select id="cardsPerPlayer">
-        <option value="5">5</option>
-        <option value="7">7</option>
-        <option value="10">10</option>
-        <option value="auto">auto</option>
-      </select>
-
-      <button id="startBtn">start</button>
-    </div>
-  </section>
-
-  <section id="game" hidden>
-    <div id="table">
-      <div id="centerPile">center</div>
-    </div>
-
-    <div id="players" class="game-row"></div>
-
-    <div id="humanHand" class="game-row"></div>
-
-    <div id="actionBar" class="action hidden">
-      <select id="rankSelect" class="select"></select>
-      <button id="playBtn">play</button>
-      <button id="passBtn">pass</button>
-    </div>
-
-    <div id="log"></div>
-  </section>
+    <section id="game" class="panel hidden">
+      <div class="board">
+        <div id="centerPile" class="center-pile">center</div>
+        <div id="players" class="player-list"></div>
+      </div>
+      <div id="humanHand" class="hand"></div>
+      <div id="actionBar" class="action-bar hidden">
+        <button id="playBtn" disabled>play</button>
+        <button id="passBtn">pass</button>
+      </div>
+      <div id="log" class="log"></div>
+    </section>
+  </main>
 
   <script src="index.js"></script>
 </body>
