@@ -8,8 +8,11 @@
 </head>
 <body>
   <main class="page">
-    <section id="setup" class="panel">
-      <h1>bluff</h1>
+    <section id="setup" class="panel start-panel">
+      <div class="panel-header">
+        <h1>bluff</h1>
+        <p>choose bots and hand size</p>
+      </div>
       <div class="controls">
         <label for="botCount">bots</label>
         <input id="botCount" type="range" min="1" max="3" value="1">
@@ -25,7 +28,7 @@
       </div>
     </section>
 
-    <section id="game" class="panel hidden">
+    <section id="game" class="panel game-panel hidden">
       <div class="board">
         <div id="centerPile" class="center-pile">center</div>
         <div id="players" class="player-list"></div>

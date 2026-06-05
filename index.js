@@ -63,11 +63,26 @@
     human.hand.forEach((card, index) => {
       const item = document.createElement('div');
       item.className = 'card';
-      item.textContent = cardLabel(card);
       item.dataset.index = index;
+
+      const inner = document.createElement('div');
+      inner.className = 'card-inner';
+
+      const front = document.createElement('div');
+      front.className = 'card-face card-front';
+      front.textContent = cardLabel(card);
+
+      const back = document.createElement('div');
+      back.className = 'card-face card-back';
+
+      inner.appendChild(front);
+      inner.appendChild(back);
+      item.appendChild(inner);
+
       if (state.selected === index) {
         item.classList.add('selected');
       }
+
       item.addEventListener('click', () => {
         if (!state.active || state.currentIndex !== 0) {
           return;
@@ -76,6 +91,7 @@
         renderHand();
         updateControls();
       });
+
       $humanHand.appendChild(item);
     });
   };
@@ -107,7 +123,7 @@
     state.currentIndex = (state.currentIndex + 1) % state.players.length;
     render();
     if (state.active && state.currentIndex !== 0) {
-      window.setTimeout(botTurn, 500);
+      window.setTimeout(botTurn, 550);
     }
   };
 
